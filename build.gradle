@@ -6,7 +6,19 @@ plugins {
 }
 
 group = 'org.monkey_business'
-version = '1.0.0'
+version = gitVersion()
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('buildDocker', Exec) {
+    executable '/usr/local/bin/docker'
+            args 'build', '-t', "utility_supervisor:${version}", '.'
+    doFirst{
+        println "Docker version: ${'docker --version'.execute().text}"
+    }
+}
 
 java {
     toolchain {
@@ -36,10 +48,5 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
 
-task buildDocker(type: Exec){
-    commandLine 'docker', 'build', '-t', "utility_supervisor:${gitVersion()}", '.'
-}
+

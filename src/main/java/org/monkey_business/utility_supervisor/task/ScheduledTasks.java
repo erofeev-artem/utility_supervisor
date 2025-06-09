@@ -47,7 +47,7 @@ public class ScheduledTasks {
         this.chatIds = telegramBotConfig.getChatIds();
     }
 
-    @Scheduled(cron = "0 0 20 * * ?", zone = "Europe/Moscow")
+    @Scheduled(cron = "0 0 18 * * ?", zone = "Europe/Moscow")
     public void callEvening() {
         log.info("Evening reminder schedule started");
         LocalDate starDate = LocalDate.now().plusDays(1);
