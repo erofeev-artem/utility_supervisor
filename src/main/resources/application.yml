@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: utility_supervisor
+telegram:
+  bot:
+    name: ${BOT_NAME}
+    token: ${TELEGRAM_TOKEN}
+    chat_ids: ${TELEGRAM_CHAT_IDS}
+
