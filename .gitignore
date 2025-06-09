@@ -36,3 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 .env
+/gradlew
+/gradlew.bat
+/.gitattributes
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
