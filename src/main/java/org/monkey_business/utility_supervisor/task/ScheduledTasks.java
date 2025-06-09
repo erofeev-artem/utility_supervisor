@@ -58,6 +58,7 @@ public class ScheduledTasks {
             Storage.put(resultOutageDto.getData().get(0).getStartDate(), resultOutageDto);
             SendMessage message = processor.makeMessageForTomorrow(resultOutageDto);
             for (String chatId : chatIds) {
+                log.info("callEvening chat id: " + chatId);
                 message.setChatId(chatId);
                 bot.sendMessage(message);
             }
@@ -76,6 +77,7 @@ public class ScheduledTasks {
         if (resultOutageDto != null) {
             SendMessage message = processor.makeMessageForToday(resultOutageDto);
             for (String chatId : chatIds) {
+                log.info("callMorning chat id: " + chatId);
                 message.setChatId(chatId);
                 bot.sendMessage(message);
             }

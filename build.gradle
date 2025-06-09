@@ -1,8 +1,12 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.palantir.git-version' version "3.3.0"
+    id 'com.bmuschko.docker-remote-api' version "9.4.0"
 }
 
 group = 'org.monkey_business'
@@ -12,12 +16,21 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.register('buildDocker', Exec) {
-    executable '/usr/local/bin/docker'
-            args 'build', '-t', "utility_supervisor:${version}", '.'
+tasks.register('dockerBuild', DockerBuildImage) {
+    dependsOn 'build'
+    inputDir = file('.')
+    images.add("utility_supervisor:${version}")
     doFirst{
         println "Docker version: ${'docker --version'.execute().text}"
     }
+}
+
+
+tasks.register('dockerTag', DockerTagImage){
+    dependsOn dockerBuild
+    repository = "87.228.99.141:5000/utility_supervisor"
+    tag = version
+    imageId = dockerBuild.getImageId()
 }
 
 java {

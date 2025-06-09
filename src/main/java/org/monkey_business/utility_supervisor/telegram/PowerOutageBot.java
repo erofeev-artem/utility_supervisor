@@ -41,6 +41,7 @@ public class PowerOutageBot extends TelegramLongPollingBot {
             }
         } else if (update.hasMessage() && !update.getMessage().isGroupMessage() && !update.getMessage().isSuperGroupMessage()) {
             Long userId = update.getMessage().getChatId();
+            log.info("message: " + update.getMessage().getText() + " / " + update.getMessage().getFrom().getUserName());
             if (!rateLimiterService.allowRequest(String.valueOf(userId))) {
                 SendMessage message = new SendMessage();
                 message.setChatId(userId);
