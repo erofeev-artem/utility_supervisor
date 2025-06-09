@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  app:
+    image: utility_supervisor
+    env_file:
+      - .env
+    container_name: utility_supervisor
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped

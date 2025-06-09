@@ -1,5 +1,6 @@
 package org.monkey_business.utility_supervisor.service;
 
+import org.monkey_business.utility_supervisor.enums.UserState;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -14,7 +15,7 @@ public class StateMachineService {
     }
 
     public String getCurrentState(String chatId) {
-        return userStates.getOrDefault(chatId, "DEFAULT");
+        return userStates.getOrDefault(chatId, UserState.DEFAULT.getState());
     }
 
     public void resetState(String chatId) {

@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface TableParser {
     List<?> parse(Document document);
-
 }

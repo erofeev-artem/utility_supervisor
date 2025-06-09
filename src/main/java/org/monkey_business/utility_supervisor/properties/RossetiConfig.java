@@ -14,8 +14,8 @@ public class RossetiConfig {
 
     @Value("${url}")
     public String url;
-    @Value("${city}")
-    public String city;
+    @Value("${district}")
+    public String district;
     @Value("${street}")
     public String street;
 }
