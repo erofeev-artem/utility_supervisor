@@ -1,4 +1,4 @@
-package org.monkey_business.utility_supervisor.properties;
+package org.monkey_business.utility_supervisor.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +12,10 @@ import org.springframework.context.annotation.PropertySource;
 @Getter
 public class RossetiConfig {
 
-    @Value("${url}")
+    @Value("${rosseti.url}")
     public String url;
-    @Value("${district}")
+    @Value("${rosseti.district}")
     public String district;
-    @Value("${street}")
+    @Value("${rosseti.street}")
     public String street;
 }

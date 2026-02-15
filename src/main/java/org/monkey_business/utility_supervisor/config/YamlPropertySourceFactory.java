@@ -1,4 +1,4 @@
-package org.monkey_business.utility_supervisor.properties;
+package org.monkey_business.utility_supervisor.config;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

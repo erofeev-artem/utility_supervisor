@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class RossetiTableParser implements TableParser {
-    @Override
+public class RossetiParser {
     public List<RossetiOutageResponseDto> parse(Document document) {
         List<RossetiOutageResponseDto> dtos = new ArrayList<>();
         String className = "even";

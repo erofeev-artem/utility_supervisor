@@ -6,4 +6,10 @@ telegram:
     name: ${BOT_NAME}
     token: ${TELEGRAM_TOKEN}
     chat_ids: ${TELEGRAM_CHAT_IDS}
+scheduling:
+  enabled: ${SCHEDULING_ENABLED:false}
+  cron:
+    evening-koltushi: "0 0 20 * * ?"
+    evening: "0 0 18 * * ?"
+    morning: "0 0 8 * * ?"
 

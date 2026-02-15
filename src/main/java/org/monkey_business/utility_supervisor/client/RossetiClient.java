@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
-public class RossetiClient implements WebClient {
+public class RossetiClient {
 
     /*
     city - это административный район

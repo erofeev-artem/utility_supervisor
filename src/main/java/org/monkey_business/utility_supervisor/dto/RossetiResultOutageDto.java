@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResultOutageDto<T> {
+public class RossetiResultOutageDto<T> {
     private List<T> data;
     private int statusCode;
 }
