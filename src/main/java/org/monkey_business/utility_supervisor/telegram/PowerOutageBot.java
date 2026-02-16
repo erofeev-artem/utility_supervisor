@@ -26,18 +26,18 @@ public class PowerOutageBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        String rateLimitText = "Слишком много запросов, попробуйте через минуту";
         if (update.hasCallbackQuery() && !update.getCallbackQuery().getMessage().isSuperGroupMessage() &&
                 !update.getCallbackQuery().getMessage().isGroupMessage()) {
             Long userId = update.getCallbackQuery().getMessage().getChatId();
             if (!rateLimiterService.allowRequest(String.valueOf(userId))) {
                 SendMessage message = new SendMessage();
                 message.setChatId(userId);
-                message.setText("Слишком много запросов, попробуйте через минуту");
+                message.setText(rateLimitText);
                 sendMessage(message);
             } else if (update.hasCallbackQuery()) {
                 SendMessage message = processor.processCallback(update);
                 sendMessage(message);
-
             }
         } else if (update.hasMessage() && !update.getMessage().isGroupMessage() && !update.getMessage().isSuperGroupMessage()) {
             Long userId = update.getMessage().getChatId();
@@ -45,7 +45,7 @@ public class PowerOutageBot extends TelegramLongPollingBot {
             if (!rateLimiterService.allowRequest(String.valueOf(userId))) {
                 SendMessage message = new SendMessage();
                 message.setChatId(userId);
-                message.setText("Слишком много запросов, попробуйте через минуту");
+                message.setText(rateLimitText);
                 sendMessage(message);
             } else if (update.hasMessage() && update.getMessage().hasText()) {
                 SendMessage message = processor.processMessage(update);
