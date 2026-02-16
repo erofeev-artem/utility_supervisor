@@ -12,14 +12,14 @@ import org.springframework.context.annotation.PropertySource;
 @Getter
 public class KoltushiConfig {
     @Value("${koltushi.url}")
-    public String url;
+    private String url;
 
     @Value("${koltushi.announcementsPageParameter}")
-    public String announcementsPageParameter;
+    private String announcementsPageParameter;
 
     @Value("${koltushi.announcementPageParameter}")
-    public String announcementPageParameter;
+    private String announcementPageParameter;
 
     @Value("${koltushi.targetTp}")
-    public String targetTp;
+    private String targetTp;
 }

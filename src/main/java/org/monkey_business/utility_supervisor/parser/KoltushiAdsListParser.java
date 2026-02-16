@@ -35,6 +35,6 @@ public class KoltushiAdsListParser {
             return false;
         }
         LocalDate date = LocalDate.parse(matcher.group(1), DATE_FORMATTER);
-        return date.isBefore(LocalDate.now().minusDays(3));
+        return date.isBefore(LocalDate.now());
     }
 }

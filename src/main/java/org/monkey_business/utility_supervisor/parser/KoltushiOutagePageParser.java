@@ -4,6 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.monkey_business.utility_supervisor.config.KoltushiConfig;
+import org.monkey_business.utility_supervisor.exception.ParseException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,22 +22,25 @@ public class KoltushiOutagePageParser {
     }
 
     public Map<String, List<String>> parse(Document document) {
-        Map<String, List<String>> result = new HashMap<>();
+        try {
+            Map<String, List<String>> result = new HashMap<>();
 
-        Elements uls = document.select(".entry-inner ul");
-        for (Element ul : uls) {
-            List<String> matched = targetTp.stream()
-                    .filter(tp -> ul.select("li").stream().anyMatch(li -> li.text().contains(tp)))
-                    .toList();
+            Elements uls = document.select(".entry-inner ul");
+            for (Element ul : uls) {
+                List<String> matched = targetTp.stream()
+                        .filter(tp -> ul.select("li").stream().anyMatch(li -> li.text().contains(tp)))
+                        .toList();
 
-            if (!matched.isEmpty()) {
-                Element p = ul.previousElementSibling();
-                if (p != null && p.tagName().equals("p")) {
-                    result.put(p.text(), matched);
+                if (!matched.isEmpty()) {
+                    Element p = ul.previousElementSibling();
+                    if (p != null && p.tagName().equals("p")) {
+                        result.put(p.text(), matched);
+                    }
                 }
             }
+            return result;
+        } catch (Exception e) {
+            throw new ParseException("KoltushiOutagePageParser is broken: " + e.getMessage());
         }
-
-        return result;
     }
 }

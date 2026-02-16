@@ -41,6 +41,12 @@ public class BotMessageProcessor {
         if ("koltushi_outages".equals(data)) {
             return makeKoltushiOutagesMessage(chatId.toString());
         }
+        if ("hint".equals(data)) {
+            SendMessage message = new SendMessage();
+            message.setChatId(chatId.toString());
+            message.setText("ТП-7530 - очереди 1 и 2\nТП-5189 - очередь 3");
+            return message;
+        }
         return makeWelcomeMessage(chatId.toString());
     }
 
@@ -57,10 +63,16 @@ public class BotMessageProcessor {
         List<List<InlineKeyboardButton>> keyboardRows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
         row.add(InlineKeyboardButton.builder()
-                .text("Отключения ТП-5189/ТП-7530 (3 дня)")
+                .text("Отключения 1-3 очереди")
                 .callbackData("koltushi_outages")
                 .build());
         keyboardRows.add(row);
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(InlineKeyboardButton.builder()
+                .text("Подсказка")
+                .callbackData("hint")
+                .build());
+        keyboardRows.add(row2);
         keyboardMarkup.setKeyboard(keyboardRows);
         message.setReplyMarkup(keyboardMarkup);
         return message;
@@ -85,11 +97,11 @@ public class BotMessageProcessor {
         message.setChatId(chatId);
         List<KoltushiOutageResponseDto> outages = koltushiStorage.getForNextDays(3);
         if (outages.isEmpty()) {
-            message.setText("Плановых отключений ТП-5189(очередь 3)/ТП-7530(очереди 1 и 2) на ближайшие 3 дня не найдено.");
+            message.setText("Плановых отключений ТП-5189(очередь 3)\nТП-7530(очереди 1 и 2) на ближайшие 3 дня не найдено.");
         } else {
             String text = outages.stream()
-                    .map(dto -> dto.getDate().format(DATE_FORMATTER) + " — " +
-                            String.join(", ", dto.getMatchedTps()) + "\n" + dto.getDescription())
+                    .map(dto ->
+                             "\n" + dto.getDescription() + " " + String.join(", ", dto.getMatchedTps()))
                     .collect(Collectors.joining("\n\n"));
             message.setText("Плановые отключения ТП-5189(очередь 3)/ТП-7530(очередь 1 и 2):\n\n" + text);
         }

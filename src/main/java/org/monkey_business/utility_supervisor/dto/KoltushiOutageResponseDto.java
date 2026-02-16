@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 @Getter
 public class KoltushiOutageResponseDto {
-    String href;
-    LocalDate date;
-    String description;
-    List<String> matchedTps;
+    private String href;
+    private LocalDate date;
+    private String description;
+    private List<String> matchedTps;
 }

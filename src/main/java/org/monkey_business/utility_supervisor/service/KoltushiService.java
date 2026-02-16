@@ -38,7 +38,7 @@ public class KoltushiService {
 
     public List<KoltushiOutageResponseDto> request() {
         Document listingPage = koltushiMoClient.callAnnouncementPage(
-                koltushiConfig.getUrl() + koltushiConfig.announcementsPageParameter);
+                koltushiConfig.getUrl() + koltushiConfig.getAnnouncementsPageParameter());
         log.info("Fetched announcements listing page");
 
         List<String> hrefs = koltushiAdsListParser.parse(listingPage);
@@ -55,7 +55,13 @@ public class KoltushiService {
                                     .description(entry.getKey())
                                     .matchedTps(entry.getValue())
                                     .build())
-                            .filter(dto -> dto.getDate() != null);
+                            .filter(dto -> {
+                                if (dto.getDate() == null) {
+                                    log.warn("Could not extract date from description, skipping: {}", dto.getDescription());
+                                    return false;
+                                }
+                                return true;
+                            });
                 })
                 .toList();
 

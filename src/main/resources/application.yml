@@ -9,5 +9,5 @@ telegram:
 scheduling:
   enabled: ${SCHEDULING_ENABLED:false}
   cron:
-    update-koltushi: "0 * * * * *"
+    update-koltushi: "0 0 */2 * * *"
 
