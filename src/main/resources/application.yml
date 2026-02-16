@@ -9,7 +9,5 @@ telegram:
 scheduling:
   enabled: ${SCHEDULING_ENABLED:false}
   cron:
-    evening-koltushi: "0 0 20 * * ?"
-    evening: "0 0 18 * * ?"
-    morning: "0 0 8 * * ?"
+    update-koltushi: "0 * * * * *"
 
