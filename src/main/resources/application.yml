@@ -6,8 +6,12 @@ telegram:
     name: ${BOT_NAME}
     token: ${TELEGRAM_TOKEN}
     chat_ids: ${TELEGRAM_CHAT_IDS}
+    emergency-chat: ${EMERGENCY_CHAT}
+    rate-limit-message: "Слишком много запросов, попробуйте через минуту"
 scheduling:
   enabled: ${SCHEDULING_ENABLED:false}
   cron:
-    update-koltushi: "0 0 */2 * * *"
-
+    update-koltushi: ${CRON_UPDATE_KOLTUSHI:0 0 */2 * * *}
+    warning-koltushi: ${CRON_WARNING_KOLTUSHI:0 0 16 * * *}
+koltushi:
+  forecast-days: 5

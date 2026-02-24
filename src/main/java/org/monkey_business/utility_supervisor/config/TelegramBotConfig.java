@@ -25,6 +25,8 @@ public class TelegramBotConfig {
     private String token;
     private String name;
     private List<String> chatIds;
+    private String emergencyChat;
+    private String rateLimitMessage;
 
     @Bean
     public TelegramBotsApi telegramBotsApi(PowerOutageBot bot) throws TelegramApiException {
@@ -39,6 +41,6 @@ public class TelegramBotConfig {
 
     @Bean
     public PowerOutageBot bot(BotMessageProcessor processor, RateLimiterService rateLimiterService) {
-        return new PowerOutageBot(name, token, processor, rateLimiterService);
+        return new PowerOutageBot(name, token, processor, rateLimiterService, rateLimitMessage);
     }
 }

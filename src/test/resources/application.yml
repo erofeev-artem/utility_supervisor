@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: utility_supervisor
+
+telegram:
+  bot:
+    name: test-bot
+    token: test-token
+    chat_ids: 123456789
+    emergency-chat: 123456789
+
+scheduling:
+  enabled: false
+  cron:
+    update-koltushi: "0 0 20 * * *"

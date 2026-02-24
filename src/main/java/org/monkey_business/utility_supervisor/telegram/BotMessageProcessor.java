@@ -20,12 +20,15 @@ import java.util.stream.Collectors;
 public class BotMessageProcessor {
 
     private final KoltushiStorage koltushiStorage;
+    private final int forecastDays;
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Autowired
-    public BotMessageProcessor(KoltushiStorage koltushiStorage) {
+    public BotMessageProcessor(KoltushiStorage koltushiStorage,
+                               @org.springframework.beans.factory.annotation.Value("${koltushi.forecast-days:3}") int forecastDays) {
         this.koltushiStorage = koltushiStorage;
+        this.forecastDays = forecastDays;
     }
 
     public SendMessage processMessage(Update update) {
@@ -92,12 +95,12 @@ public class BotMessageProcessor {
     }
 
     public SendMessage makeKoltushiOutagesMessage(String chatId) {
-        log.info("make koltushi outages message for next 3 days");
+        log.info("make koltushi outages message for next {} days", forecastDays);
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        List<KoltushiOutageResponseDto> outages = koltushiStorage.getForNextDays(3);
+        List<KoltushiOutageResponseDto> outages = koltushiStorage.getForNextDays(forecastDays);
         if (outages.isEmpty()) {
-            message.setText("Плановых отключений ТП-5189(очередь 3)\nТП-7530(очереди 1 и 2) на ближайшие 3 дня не найдено.");
+            message.setText(String.format("Плановых отключений ТП-5189(очередь 3)\nТП-7530(очереди 1 и 2) на ближайшие %d дня не найдено.", forecastDays));
         } else {
             String text = outages.stream()
                     .map(dto ->

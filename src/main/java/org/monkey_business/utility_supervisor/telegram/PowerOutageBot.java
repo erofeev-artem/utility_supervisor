@@ -15,25 +15,27 @@ public class PowerOutageBot extends TelegramLongPollingBot {
     private final String token;
     private final BotMessageProcessor processor;
     private final RateLimiterService rateLimiterService;
+    private final String rateLimitMessage;
 
     @Autowired
-    public PowerOutageBot(String name, String token, BotMessageProcessor processor, RateLimiterService rateLimiterService) {
+    public PowerOutageBot(String name, String token, BotMessageProcessor processor,
+                          RateLimiterService rateLimiterService, String rateLimitMessage) {
         this.name = name;
         this.token = token;
         this.processor = processor;
         this.rateLimiterService = rateLimiterService;
+        this.rateLimitMessage = rateLimitMessage;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        String rateLimitText = "Слишком много запросов, попробуйте через минуту";
         if (update.hasCallbackQuery() && !update.getCallbackQuery().getMessage().isSuperGroupMessage() &&
                 !update.getCallbackQuery().getMessage().isGroupMessage()) {
             Long userId = update.getCallbackQuery().getMessage().getChatId();
             if (!rateLimiterService.allowRequest(String.valueOf(userId))) {
                 SendMessage message = new SendMessage();
                 message.setChatId(userId);
-                message.setText(rateLimitText);
+                message.setText(rateLimitMessage);
                 sendMessage(message);
             } else if (update.hasCallbackQuery()) {
                 SendMessage message = processor.processCallback(update);
@@ -45,7 +47,7 @@ public class PowerOutageBot extends TelegramLongPollingBot {
             if (!rateLimiterService.allowRequest(String.valueOf(userId))) {
                 SendMessage message = new SendMessage();
                 message.setChatId(userId);
-                message.setText(rateLimitText);
+                message.setText(rateLimitMessage);
                 sendMessage(message);
             } else if (update.hasMessage() && update.getMessage().hasText()) {
                 SendMessage message = processor.processMessage(update);
@@ -68,7 +70,8 @@ public class PowerOutageBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            log.error(e.getMessage());
+            log.error("Failed to send Telegram message to chat {}: {}",
+                    sendMessage.getChatId(), e.getMessage(), e);
         }
     }
 }
