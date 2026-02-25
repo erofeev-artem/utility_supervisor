@@ -100,7 +100,7 @@ public class BotMessageProcessor {
         message.setChatId(chatId);
         List<KoltushiOutageResponseDto> outages = koltushiStorage.getForNextDays(forecastDays);
         if (outages.isEmpty()) {
-            message.setText(String.format("Плановых отключений ТП-5189(очередь 3)\nТП-7530(очереди 1 и 2) на ближайшие %d дня не найдено.", forecastDays));
+            message.setText(String.format("Плановых отключений ТП-5189(очередь 3)\nТП-7530(очереди 1 и 2) на ближайшие %d дней не найдено.", forecastDays));
         } else {
             String text = outages.stream()
                     .map(dto ->

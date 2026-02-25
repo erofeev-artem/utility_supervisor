@@ -1,6 +1,9 @@
 spring:
   application:
     name: utility_supervisor
+logging:
+  level:
+    org.springframework.web: DEBUG
 telegram:
   bot:
     name: ${BOT_NAME}

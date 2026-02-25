@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -20,6 +21,29 @@ public class GlobalExceptionHandler {
 
     public GlobalExceptionHandler(ErrorNotificationService errorNotificationService) {
         this.errorNotificationService = errorNotificationService;
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoResourceFoundException(
+            NoResourceFoundException ex, WebRequest request) {
+
+        String endpoint = request.getDescription(false).replace("uri=", "");
+
+        // Don't spam Telegram with favicon errors - just log at debug level
+        if (endpoint.contains("favicon.ico")) {
+            log.debug("Favicon not found (ignoring): {}", endpoint);
+        } else {
+            log.warn("Resource not found at {}: {}", endpoint, ex.getMessage());
+        }
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+        body.put("path", endpoint);
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
