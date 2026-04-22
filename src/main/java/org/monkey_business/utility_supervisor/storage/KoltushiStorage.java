@@ -20,7 +20,7 @@ public class KoltushiStorage {
 
     public List<KoltushiOutageResponseDto> getForNextDays(int days) {
         LocalDate today = LocalDate.now();
-        return IntStream.rangeClosed(1, days)
+        return IntStream.range(0, days)
                 .mapToObj(i -> storage.getOrDefault(today.plusDays(i), List.of()))
                 .flatMap(List::stream)
                 .toList();
